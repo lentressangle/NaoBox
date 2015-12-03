@@ -43,12 +43,7 @@
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li>
-                <a href="#">
-                  <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Mon panier
-                </a>
-              </li>
-              <li>
-                <a href="#">
+                <a href="index.html">
                   <span class="glyphicon glyphicon-home"></span> Home
                 </a>
               </li>
@@ -73,9 +68,10 @@
       <!-- Main component for a primary marketing message or call to action -->
       <div class="container">
         <div class="col-lg-12 hidden-xs hidden-xs"  ng-controller="ListContentController">
+        <button ng-if="root == false" type="button" ng-click="previous(parent_path);" class="btn btn-primary"><span class="glyphicon glyphicon-triangle-left"></span> Retour</button><hr/>
           <ul class="list-group">
             <a href="#" ng-repeat="folder in listFolder">
-              <li class="list-group-item" ng-click="goTo(folder[0]);">
+              <li class="list-group-item" ng-click="goTo(folder[0].relative_path, folder[0].name);">
                 <span ng-if="folder[0].is_dir == false" class="glyphicon glyphicon-file">   {{folder[0].name}}</span>
                 <span ng-if="folder[0].is_dir == true" class="glyphicon glyphicon-folder-open">   {{folder[0].name}}</span>
               </li>
