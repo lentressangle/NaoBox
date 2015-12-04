@@ -11,29 +11,31 @@ function ListContentController($scope,$window,$http) {
     /*
         GET content list of root directory
     */
-    adressEndpoint = "http://localhost:8000/api/content"
-    $http({ method: 'GET', url: adressEndpoint + '/root' }).
+    adressEndpoint = "http://localhost:8000/api/content/";
+    $http({ method: 'GET', url: adressEndpoint + 'root/1/' }).
       success(function (data, status, headers, config) {
-        $scope.listFolder = data['data']['folder'];
+        $scope.listFolder = data.data.folder;
         $scope.current = "root";
         $scope.root = true;
+        $scope.pager = data.data.pager;
       });
 
     /*
         GET content list of clicked directory
     */
     $scope.goTo = function(relative_path, name) {
-        adress = relative_path + name;
-        $http({ method: 'GET', url: adressEndpoint + adress}).success(function (data, status, headers, config) {
-            $scope.listFolder = data['data']['folder'];
+        adress = relative_path.replace(/^\//, '') + encodeURIComponent(name); // remove first '/'
+        $http({ method: 'GET', url: adressEndpoint + adress + '/1/'}).success(function (data, status, headers, config) {
+            $scope.listFolder = data.data.folder;
             $scope.root = false;
-            $scope.parent_path = data['data']['folder'][0][0]['parent_path'];
-            if($scope.parent_path == "") {
+            $scope.parent_path = data.data.folder[0][0].parent_path;
+            $scope.pager = data.data.pager;
+            if($scope.parent_path === "") {
                 $scope.parent_path = "/root";
             }
             $scope.current_path = adress;
         });
-    }
+    };
 
     /*
         GET content of parent folder
