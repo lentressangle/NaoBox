@@ -3,6 +3,7 @@ var app = angular.module('mediator', []);
 app.controller('ListContentController', ['$scope','$window', '$http', ListContentController]);
 app.controller('CreateFolderController', ['$scope','$window', '$http', CreateFolderController]);
 
+ adressEndpoint = "http://localhost:8000/api";
 
 /*** Can list and browse files ans folders ***/
 
@@ -11,8 +12,7 @@ function ListContentController($scope,$window,$http) {
     /*
         GET content list of root directory
     */
-    adressEndpoint = "http://localhost:8000/api/content/";
-    $http({ method: 'GET', url: adressEndpoint + 'root/1/' }).
+    $http({ method: 'GET', url: adressEndpoint + '/content/root/1/' }).
       success(function (data, status, headers, config) {
         $scope.listFolder = data.data.folder;
         $scope.current = "root";
@@ -25,7 +25,7 @@ function ListContentController($scope,$window,$http) {
     */
     $scope.goTo = function(relative_path, name) {
         adress = relative_path.replace(/^\//, '') + encodeURIComponent(name); // remove first '/'
-        $http({ method: 'GET', url: adressEndpoint + adress + '/1/'}).success(function (data, status, headers, config) {
+        $http({ method: 'GET', url: adressEndpoint + "/content/" + adress + '/1/'}).success(function (data, status, headers, config) {
             $scope.listFolder = data.data.folder;
             $scope.root = false;
             $scope.parent_path = data.data.folder[0][0].parent_path;
@@ -45,18 +45,14 @@ function ListContentController($scope,$window,$http) {
     }
 }
 
-
 /*** Can create an folder in current path ***/
 
 function CreateFolderController($scope,$window,$http) {
-
-
     /*
         to create a new folder in current path
     */
     $scope.create_folder = function(name, path) {
         console.log(path + "/" + name);
-        adressEndpoint = "http://localhost:8000/api"
         $http.post(adressEndpoint + "/fileops/create_folder", {path: path + "/" + name }).success(function(data, status, headers, config) {
             console.log(data);
         });
