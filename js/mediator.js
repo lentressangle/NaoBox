@@ -1,12 +1,12 @@
 $(function () {
-    $('[data-toggle="popover"]').popover({
+    $('[data-toggle="popover-upload"]').popover({
         html: true, 
         content: function() {
-            return $('#popover-content').html();
+            return $('#popover-content-upload').html();
         }
     });
 
-    $('body').on('click', 
+        $('body').on('click', 
         function (e) {
             //did not click a popover toggle, or icon in popover toggle, or popover
             if ($(e.target).data('toggle') !== 'popover'
